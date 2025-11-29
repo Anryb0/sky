@@ -1,0 +1,63 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+html {
+	font-size: 15px;
+	font-family: "Noto Sans", sans-serif;
+}
+body {
+	margin: 70px 0;
+	background: #f1f1f1;
+	min-width: 1070px;
+}
+main {
+	margin: 20px auto;
+	max-width: 950px;
+	width: 95%;
+}
+hr{
+	margin: 0;
+	border-color: rgb(171 171 171 / 20%);
+}
+.glassy{
+	background: rgba(255, 255, 255, 0.15);
+	backdrop-filter: blur(1px); 
+	border: 2px solid rgba(255, 255, 255, 0.3);
+	box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.1);
+	border-radius: 15px;
+	padding: 10px;
+	animation: modalIn 0.35s forwards;
+}
+@keyframes modalIn {
+    0% { opacity: 0;
+		transform: scale(0.9);
+	}
+    100%{ opacity: 1; 
+	transform: scale(1);}
+}
+.center {
+	width: 100%;
+	text-align: center;
+}
+.glassy h3{
+	margin: 5px auto;
+}
+input {
+	background: rgba(255, 255, 255, 0.2);
+	backdrop-filter: blur(1px); 
+	border: 2px solid rgba(255, 255, 255, 0.3);
+	box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.1);
+	border-radius: 9px;
+	padding: 3px 5px;
+	transition: border-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out, transform 0.2s; 
+}
+input:hover, input:focus {
+	box-shadow: 0 4px 25px 0 rgba(0,255,150,0.4);
+	border: 2px solid rgba(0,255,150,0.4);
+	outline: none;
+}
+input.but {
+	font-size: 16px;
+	font-weight: bold;
+	width: auto;
+	padding: 3px 10px;
+	background: rgba(0,255,150,0.2);
+}

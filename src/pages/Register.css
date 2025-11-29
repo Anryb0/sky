@@ -1,0 +1,12 @@
+#maingrid .glassy {
+	text-align: center;
+}
+#maingrid {
+	display: grid;
+	grid-gap: 20px;
+	grid-template-columns: 1fr 300px 300px 1fr;
+}
+input{
+	margin: 3px;
+	width: 90%;
+}

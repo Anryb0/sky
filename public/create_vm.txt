@@ -1,0 +1,9 @@
+sudo virt-install \
+--name VM1 \
+--ram 2048 \
+--vcpus 2 \
+--disk path=/var/lib/libvirt/images/vm1.qcow2,size=20 \
+--cdrom /path/to/ubuntu-server.iso \
+--os-variant ubuntu18.04 \
+--graphics vnc,listen=0.0.0.0 \
+--network network=default
