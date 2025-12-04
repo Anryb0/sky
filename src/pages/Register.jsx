@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Header from '../components/Header.jsx'
 import './Register.css';
 
@@ -7,6 +7,7 @@ import './Register.css';
 function Register(props) {
    const [logininfo,setLogininfo] = useState({llogin:'',lpass:''});
    const [registerinfo,setRegisterinfo] = useState({rlogin:'',remail:'',rpass:'',passcheck:''});
+   const navigate = useNavigate();
    const loginch = (e) => {
 		const {name, value} = e.target;
 		setLogininfo(prev => ({
