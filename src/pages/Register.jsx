@@ -33,6 +33,7 @@ function Register(props) {
 		xhr.onload = function(){
 			if(xhr.status == 200){
 				let response = JSON.parse(xhr.responseText);
+				console.log(response);
 				if(response.success){
 					navigate('/');
 				}
@@ -72,7 +73,7 @@ function Register(props) {
 	}
    return (
 	<>
-		<Header />
+		<Header nonbut="true"/>
 		<main>
 				<div id='maingrid'>
 					<div></div>
