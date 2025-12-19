@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Header from '../components/Header.jsx'
+import { useRoot } from "../context/RootContext.jsx";
 import './Register.css';
 
 
@@ -8,6 +9,10 @@ function Register(props) {
    const [logininfo,setLogininfo] = useState({llogin:'',lpass:''});
    const [registerinfo,setRegisterinfo] = useState({rlogin:'',remail:'',rpass:'',passcheck:''});
    const navigate = useNavigate();
+   const { user, authLoading, openModal } = useRoot();
+   if(!authLoading && user){
+		navigate('/');
+	}
    const loginch = (e) => {
 		const {name, value} = e.target;
 		setLogininfo(prev => ({
@@ -33,16 +38,15 @@ function Register(props) {
 		xhr.onload = function(){
 			if(xhr.status == 200){
 				let response = JSON.parse(xhr.responseText);
-				console.log(response);
 				if(response.success){
 					navigate('/');
 				}
 				else {
-					console.log(response.message);
+					openModal(response.message,true);
 				}
 			}
 			else{
-				console.log('Ошибка ', xhr.status);
+				openModal('Ошибка ' + xhr.status,true);
 			}
 		}
 	}
@@ -60,14 +64,14 @@ function Register(props) {
 			if(xhr.status == 200){
 				let response = JSON.parse(xhr.responseText);
 				if(response.success == false){
-					console.log(response.message);
+					openModal(response.message, true);
 				}
 				else{
 					navigate('/');
 				}
 			}
 			else {
-				console.log('Ошибка ', xhr.status);
+				openModal('Ошибка '+ xhr.status,true);
 			}
 		}
 	}

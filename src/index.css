@@ -1,6 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
 html {
-	font-size: 15px;
+	font-size: 16px;
 	font-family: "Noto Sans", sans-serif;
 }
 body {
@@ -39,6 +39,7 @@ hr{
 }
 .glassy h3{
 	margin: 5px auto;
+	font-size: 20px;
 }
 input {
 	background: rgba(255, 255, 255, 0.2);
@@ -48,6 +49,7 @@ input {
 	border-radius: 9px;
 	padding: 3px 5px;
 	transition: border-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out, transform 0.2s; 
+	font-size: 15px;
 }
 input:hover, input:focus {
 	box-shadow: 0 4px 25px 0 rgba(0,255,150,0.4);
@@ -55,7 +57,7 @@ input:hover, input:focus {
 	outline: none;
 }
 input.but {
-	font-size: 16px;
+	font-size: 17px;
 	font-weight: bold;
 	width: auto;
 	padding: 3px 10px;
@@ -82,4 +84,23 @@ button:hover{
 	border: 2px solid rgba(0,255,150,0.4);
 	text-decoration: none;
 	cursor: pointer;
+}
+.spinner {
+  width: 20px;
+  height: 20px;
+  border: 4px solid rgba(0,0,0,0.2);
+  border-top-color: #333;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+#l .spinner{
+	margin-top: 15px;
+	margin-right: 5px;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+.center{
+	margin: 10px auto;
 }
