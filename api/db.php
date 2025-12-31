@@ -26,4 +26,9 @@ if (session_status() === PHP_SESSION_NONE) {
     ]);
     session_start();
 }
+$allowed = ['http://localhost:5173', 'https://anryb0.ru'];
+if (isset($_SERVER['HTTP_ORIGIN']) && in_array($_SERVER['HTTP_ORIGIN'], $allowed)) {
+    header("Access-Control-Allow-Origin: ".$_SERVER['HTTP_ORIGIN']);
+}
+header("Access-Control-Allow-Credentials: true");
 ?>

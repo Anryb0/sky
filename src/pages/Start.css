@@ -1,0 +1,15 @@
+.planprice{
+  font-size: 18px;
+  font-weight: bold;
+  text-align: right;
+}
+.plan{
+  display: grid;
+  grid-template-columns: 100px 300px 1fr;
+}
+.selected{
+  background: rgba(0,255,150,0.4);
+}
+#period{
+  width: 50px;
+}

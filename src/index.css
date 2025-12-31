@@ -25,6 +25,7 @@ hr{
 	border-radius: 15px;
 	padding: 10px;
 	animation: modalIn 0.35s forwards;
+	margin: 5px auto;
 }
 @keyframes modalIn {
     0% { opacity: 0;
@@ -78,7 +79,10 @@ button {
 	color: black;
 	font-size: 15px;
 }
-button:hover{
+.ilist{
+	transition: border-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out, transform 0.2s; 
+}
+button:hover, .ilist:hover{
 	transform: scale(1.04);
 	box-shadow: 0 4px 25px 0 rgba(0,255,150,0.4);
 	border: 2px solid rgba(0,255,150,0.4);
@@ -104,3 +108,4 @@ button:hover{
 .center{
 	margin: 10px auto;
 }
+

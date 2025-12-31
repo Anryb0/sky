@@ -24,6 +24,21 @@ function Profile(){
 			}
 		};
 	}
+	function sendNewLink(){
+		let xhr = new XMLHttpRequest();
+		xhr.open('GET','https://anryb0.ru/sky/api/makenewlink.php');
+		xhr.withCredentials = true;
+		xhr.send();
+		xhr.onload = function(){
+			let response = JSON.parse(xhr.responseText);
+			if(response.success){
+				openModal('Письмо успешно отправлено');
+			}
+			else{
+        openModal(response.message,true);
+      }
+		} 
+	}
 	useEffect(()=>{
 		let xhr = new XMLHttpRequest();
 		xhr.open("GET", "https://anryb0.ru/sky/api/profile.php", true);
@@ -51,7 +66,7 @@ function Profile(){
 				<div className='glassy' id='maininfo'>
 					<p><b>Привет, {user}</b></p>
 						<div className='glassy'>Ваша почта: {response.email}</div>
-						{ response.confirmed ? (<div className='glassy'>Учетная запись подтверждена ✔</div>) : (<div className='glassy error'>Учетная запись не подтверждена ❌. Проверьте почту</div>)
+						{ response.confirmed ? (<div className='glassy'>Учетная запись подтверждена ✔</div>) : (<div className='glassy error'>Учетная запись не подтверждена ❌. Проверьте почту<button className='green' onClick={sendNewLink}>Отправить еще ссылку</button></div>)
 						}
 					<button onClick={logout}>Выйти из аккаунта</button>
 				</div>)}
