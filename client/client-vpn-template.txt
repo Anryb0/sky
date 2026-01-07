@@ -1,0 +1,16 @@
+client
+dev tun
+proto udp
+remote 94.183.234.114 1194
+resolv-retry infinite
+nobind
+persist-key
+persist-tun
+remote-cert-tls server
+auth SHA512
+verb 3
+route-nopull
+route 10.8.0.0 255.255.255.0 vpn_gateway
+pull-filter ignore "dhcp-option DNS"
+pull-filter ignore "register-dns"
+pull-filter ignore "block-outside-dns"

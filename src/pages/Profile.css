@@ -1,3 +1,14 @@
-#maininfo div{
+.t{
 	margin: 10px auto;
+	display: grid;
+	grid-template-columns: 400px 1fr;
+}
+#stop{
+	display: grid;
+	grid-template-columns: 200px 100px 1fr 100px 170px;
+	margin: 2px 15px;
+}
+.s {
+	display: grid;
+	grid-template-columns: 200px 100px 1fr 100px 170px;
 }

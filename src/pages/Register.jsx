@@ -67,6 +67,7 @@ function Register(props) {
 					openModal(response.message, true);
 				}
 				else{
+					openModal('Регистрация успешна. Сейчас на Вашу почту придет письмо со ссылкой, по которой нужно перейти для подтверждения.');
 					navigate('/');
 				}
 			}

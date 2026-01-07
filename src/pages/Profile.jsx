@@ -63,12 +63,25 @@ function Profile(){
 			<Header nonbut='true'/>
 			<main>
 			{loading ? (<div className='spinner center'></div>) : ( 
-				<div className='glassy' id='maininfo'>
-					<p><b>Привет, {user}</b></p>
-						<div className='glassy'>Ваша почта: {response.email}</div>
-						{ response.confirmed ? (<div className='glassy'>Учетная запись подтверждена ✔</div>) : (<div className='glassy error'>Учетная запись не подтверждена ❌. Проверьте почту<button className='green' onClick={sendNewLink}>Отправить еще ссылку</button></div>)
+				<div id='maininfo'>
+					<h3><b>Привет, {user}</b></h3>
+						<>
+						{ response.confirmed ? (<div className='glassy t'>✔️ Учетная запись подтверждена<span className='right'>Ваша почта: <b>{response.email}</b></span></div>) : (<div className='glassy error'>Ваша почта: <b>{response.email}</b><span className='right'>❌ Учетная запись не подтверждена. Проверьте почту</span><button className='green' onClick={sendNewLink}>Отправить еще ссылку</button></div>)
 						}
-					<button onClick={logout}>Выйти из аккаунта</button>
+						{
+							response.ip ? (<div className='glassy t'>✔️ Сеть настроена<span className='right'><button onClick={() => {window.location.href ="https://anryb0.ru/sky/api/downloaduserconfig.php"}}>Скачать VPN конфигурацию</button><button onClick={() => {window.location.href ="https://openvpn.net/client/"}}>Скачать OpenVPN Connect</button></span></div>) : (<div className='glassy'>❌ У вас пока нет VPN конфигураций</div>)
+						}
+						{
+							response.servers.length > 0 ? (<><h3>Мои сервера</h3>
+								<div id='stop'><span>Название</span><span>IP</span><span>Статус</span><span>Тариф</span><span>ОС</span></div>
+								<hr />
+								{response.servers.map((item)=> {
+									return (<div className='glassy ilist s'><b>{item.name}</b><span>10.8.0.{item.ip}</span><span>{item.status}</span><span>{item.pname}</span><span>{item.oname}</span></div>)
+								})}</> 
+							) : (<div className='glassy t'>❌ У вас пока нет серверов<span className='right'><button onClick={() => {navigate('/start')}}>Создать</button></span></div>)
+						}
+						</>
+					<button onClick={logout} className='error'>Выйти из аккаунта</button>
 				</div>)}
 			</main>
 		</>

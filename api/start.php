@@ -39,8 +39,9 @@
   }
   $stmt->close();
   $status = 'Ждёт оплаты';
-  $plan_id = $_POST['plan_id'];
+  $plan_id = (int)$_POST['plan_id'];
   $q = (int)$_POST['q'];
+  $os_id = (int)$_POST['os_id'];
   if(!($q > 0 && $q < 21)){
     exit;
   }
@@ -51,8 +52,11 @@
   $row = $result->fetch_assoc();
   $sum = $row['price']*$q;
   $stmt->close();
-  $stmt=$conn->prepare('insert into servers (status, plan_id,user_id) values (?,?,?)');
-  $stmt->bind_param('sii',$status,$plan_id,$user['id']);
+  $randomSuffix = bin2hex(random_bytes(2));
+  $userName = preg_replace("/[^a-zA-Z0-9]/", "", $user['name']);
+  $name = $userName.'-'.$randomSuffix;
+  $stmt=$conn->prepare('insert into servers (status, plan_id,user_id,name,os_id) values (?,?,?,?,?)');
+  $stmt->bind_param('siisi',$status,$plan_id,$user['id'], $name,$os_id);
   $stmt->execute();
   $server=$conn->insert_id;
   $client = new Client();

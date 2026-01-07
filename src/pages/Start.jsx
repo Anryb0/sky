@@ -5,11 +5,13 @@ import { useRoot } from "../context/RootContext.jsx";
 import './Start.css';
 
 function Start() {
-  const { user, authLoading, openModal } = useRoot();
+  const { user, openModal } = useRoot();
   const navigate = useNavigate();
   const [loading,setLoading] = useState(true);
   const [plansData,setPlansData] = useState(null);
+  const [osData,setOsData] = useState(null);
   const [selectedPlan, setSelectedPlan] = useState([,]);
+  const [selectedOs, setSelectedOs] = useState(null);
   const [selectedQ, setSelectedQ] = useState(1);
   useEffect(() => {
 		let xhr = new XMLHttpRequest();
@@ -22,8 +24,10 @@ function Start() {
         if(response.success){
           setLoading(false);
           setPlansData(response.data);
-          console.log(response.data[0].plan_id, response.data[0].price);
+          setOsData(response.os);
           setSelectedPlan([response.data[0].plan_id, response.data[0].price]);
+          setSelectedOs(response.os[0].os_id);
+          console.log(response.os[0].os_id)
         } 
         else{
           openModal(response, true);
@@ -33,32 +37,42 @@ function Start() {
         openModal('Ошибка ' + xhr.status, true);
       }
     }
-	},[]);
+	},[user]);
   function Continue(){
-    let xhr = new XMLHttpRequest;
-    let formData = new FormData();
-    formData.append('plan_id',selectedPlan[0]);
-    formData.append('q',selectedQ);
-    xhr.withCredentials = true;
-    xhr.open('POST','https://anryb0.ru/sky/api/start.php');
-    xhr.send(formData);
-    xhr.onload = function(){
-      if(xhr.status == 200){
-        let response = JSON.parse(xhr.responseText);
-        if(response.success){
-          window.location.href = response.url;
+    if(selectedQ < 1 || selectedQ > 20){
+      openModal('Введите корректное количество от 1 до 20', true);
+    }
+    else{
+      let xhr = new XMLHttpRequest;
+      let formData = new FormData();
+      formData.append('plan_id',selectedPlan[0]);
+      formData.append('q',selectedQ);
+      formData.append('os_id',selectedOs);
+      xhr.withCredentials = true;
+      xhr.open('POST','https://anryb0.ru/sky/api/start.php');
+      xhr.send(formData);
+      xhr.onload = function(){
+        if(xhr.status == 200){
+          let response = JSON.parse(xhr.responseText);
+          if(response.success){
+            window.location.href = response.url;
+          }
+          else{
+            openModal(response.message, true)
+          }
         }
         else{
-          openModal(response.message, true)
+          openModal('Ошибка ' + xhr.status, true);
         }
-      }
-      else{
-        openModal('Ошибка ' + xhr.status, true);
       }
     }
   }
   const ChangePlan = (id) => {
     setSelectedPlan([id,plansData[id-1].price]);
+  }
+  const ChangeOs = (id) => {
+    setSelectedOs(id);
+    console.log(selectedOs);
   }
   const onChangeQ = (event) => {
     setSelectedQ(event.target.value);
@@ -76,6 +90,13 @@ function Start() {
           {plansData.map((item) => {
             return (<div className={item.plan_id == selectedPlan[0] ? 'glassy plan ilist selected' : 'glassy plan ilist'} id={'p' + item.plan_id} onClick={() => ChangePlan(item.plan_id)}><span><b>{item.name}</b></span><span><ul><li>Ядра процессора: {item.cpus}</li><li>Оперативная память: {item.ram} GB</li><li>Место на диске: {item.drive} GB</li></ul></span><span className='planprice'>{item.price} RUB/мес.</span></div>)
           })}
+
+          <h3>Какие доступны ОС?</h3>
+          {
+            osData.map((item)=>{
+              return(<div className={item.os_id == selectedOs ? 'glassy ilist selected' : 'glassy ilist'} onClick={ChangeOs(item.os_id)}><b>{item.name}</b></div>)
+            })
+          }
           <p>Выберите срок (в мес.): <input 
   type="number" 
   id="period" 

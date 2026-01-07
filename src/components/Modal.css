@@ -41,9 +41,9 @@
     100%{ opacity: 0; 
 	transform: scale(0.9);}
 }
-.error{
-	background: rgb(255 73 73 / 37%);
-}
 button{
 	background: rgb(111 251 193 / 77%)
+}
+.error{
+	background: rgb(255 73 73 / 37%);
 }

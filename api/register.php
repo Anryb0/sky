@@ -1,5 +1,7 @@
 <?php
 	require 'vendor/autoload.php';
+	use Firebase\JWT\JWT;
+	use Firebase\JWT\Key;
 	if(!isset($_POST['rlogin']) or !isset($_POST['rpass']) or !isset($_POST['remail']) or !isset($_POST['passcheck'])){
 		echo json_encode(['success'=>false,'message'=>'Отсутствуют данные']);
 		exit;
@@ -44,6 +46,7 @@
 		echo json_encode(['success'=>false,'message'=>'Ошибка регистрации']);
 		exit;
 	}
+	$user_id = $conn->insert_id;
 	$stmt->close();
 	$resend = Resend::client($_ENV['API_MAIL']);
 	$html = "<h2>Уважаемый $login, </h2><br>
@@ -58,6 +61,25 @@
 	  ]);
 	  
 	echo json_encode(['success'=>true]);
+	$payload = [
+    'iat' => time(), 
+    'exp' => time() + (60 * 60 * 24 * 30),
+    'data' => [      
+        'userId' => $user_id,
+        'userName' => $login,
+        'role' => 'user'
+		]
+	];
+	$secretKey = $_ENV['JWT_SECRET'];
+	$jwt = JWT::encode($payload, $secretKey, 'HS256');
+	$cookie_options = [
+		'expires' => time() + (60 * 60 * 24 * 30),
+		'path' => '/', 
+		'secure' => true, 
+		'httponly' => true,
+		'sameSite' => 'None'];
+	$cookieSet = setcookie('accessToken', $jwt, $cookie_options);
+	$cookieR = $cookieSet ? 'Cookie was set successfully' : 'Failed to set cookie';
 	$conn->close();
 	exit;
 ?>
