@@ -1,20 +1,19 @@
 <?php
     require 'db.php';
-    $stmt = $conn->prepare('select * from plans');
+	$stmt = $conn->prepare('select resource_id, name, price, min_value, max_value from resources');
     $stmt->execute();
-    $data = [];
+    $resources = [];
     $result = $stmt->get_result();
-    while($row=$result->fetch_assoc()){
-        $data[] = [
-            'plan_id' => $row['plan_id'],
+	while($row=$result->fetch_assoc()){
+        $resources[] = [
+            'resource_id' => $row['resource_id'],
             'name' => $row['name'],
-            'cpus' => $row['cpus'],
-            'ram' => $row['ram'],
-            'drive' => $row['drive'],
-            'price' => $row['price']
+			'price' => $row['price'],
+			'min_value' => $row['min_value'],
+			'max_value' => $row['max_value']
         ]; 
     }
-    $stmt->close();
+	$stmt->close();
     $stmt = $conn->prepare('select os_id, name from operating_systems');
     $stmt->execute();
     $os = [];
@@ -25,7 +24,8 @@
             'name' => $row['name'],
         ]; 
     }
-    echo json_encode(['success'=>true,'data'=>$data,'os'=>$os]);
+	$stmt->close();
+    echo json_encode(['success'=>true,'resources'=>$resources,'os'=>$os]);
     $conn->close();
     exit;
 ?>

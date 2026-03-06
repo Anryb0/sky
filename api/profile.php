@@ -37,7 +37,7 @@
 	$ip = $row['ip'];
 	$email = $row['email'];
 	$stmt->close();
-	$stmt = $conn->prepare('select s.name, s.ip, s.status, p.name as pname, o.name as oname from servers s left join plans p on s.plan_id = p.plan_id left join operating_systems o on s.os_id = o.os_id where s.user_id = ?');
+	$stmt = $conn->prepare('select s.name, s.ip, s.status, o.name as oname, pl.link from servers s left join operating_systems o on s.os_id = o.os_id left join payments pl on pl.server_id = s.server_id where s.user_id = ?');
 	$stmt->bind_param('i',$user['id']);
 	$stmt->execute();
 	$servers = [];
@@ -47,10 +47,11 @@
 			'name' => $row['name'],
 			'ip' => $row['ip'],
 			'status' => $row['status'],
-			'pname' => $row['pname'],
-			'oname' => $row['oname']
+			'oname' => $row['oname'],
+			'link' => $row['link']
 		];
 	}
 	$conn->close();
 	echo json_encode(['confirmed'=>$confirmed,'email'=>$email,'ip'=>$ip,'servers'=>$servers]);
 ?>
+

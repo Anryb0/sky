@@ -5,12 +5,12 @@ html {
 }
 body {
 	margin: 70px 0;
-	background: #d6d6d6;
+	background: #e1e1e1;
 	min-width: 1070px;
 }
 main {
 	margin: 20px auto;
-	max-width: 950px;
+	max-width: 1050px;
 	width: 95%;
 }
 hr{
@@ -18,11 +18,11 @@ hr{
 	border-color: rgb(171 171 171 / 20%);
 }
 .glassy{
-	background: rgba(255, 255, 255, 0.15);
+	background: rgba(255, 255, 255, 0.10);
 	backdrop-filter: blur(1px); 
 	border: 2px solid rgba(255, 255, 255, 0.3);
 	box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.1);
-	border-radius: 15px;
+	border-radius: 19px;
 	padding: 10px;
 	animation: modalIn 0.35s forwards;
 	margin: 5px auto;

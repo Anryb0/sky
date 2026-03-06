@@ -5,10 +5,13 @@
 }
 #stop{
 	display: grid;
-	grid-template-columns: 200px 100px 1fr 100px 170px;
+	grid-template-columns: 200px 100px 1fr 170px;
 	margin: 2px 15px;
 }
 .s {
 	display: grid;
-	grid-template-columns: 200px 100px 1fr 100px 170px;
+	grid-template-columns: 200px 100px 1fr 170px;
+}
+.r{
+	float: right;
 }

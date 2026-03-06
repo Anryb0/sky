@@ -13,3 +13,80 @@
 #period{
   width: 50px;
 }
+.qc input {
+  width: 250px;
+  height: 10px;
+  margin: 15px 0;
+  margin-right: 5px;
+  background-color: background: rgba(255, 255, 255, 0.10);;
+  border-radius: 15px;
+  appearance: none;
+}
+.qc input::-webkit-slider-thumb {
+  width: 10px;
+  height: 10px;
+  background-color: rgba(0,255,150,1);
+  appearance: none;
+  border-radius: 50%;
+}
+
+.qc input::-moz-range-thumb {
+  width: 10px;
+  height: 10px;
+  background-color: rgba(0,255,150,0.4);
+  appearance: none;
+}
+#resgrid{
+	display: grid;
+	grid-template-columns: 1fr 1fr 1fr;
+}
+#resgrid div{
+	width: 90%;
+}
+.qc {
+	width: 100%;
+	margin: 0;
+	display: grid;
+	grid-template-columns: 25px 1fr 30px;
+	align-items: center;
+	justify-content: space-between;
+	justify-items: center;
+}
+.small {
+	font-size: 12px;
+	margin: 5px auto;
+}
+.big {
+
+	font-size: 18px;
+	margin: 15px auto;
+}
+#pay {
+	font-size: 17px;
+    padding: 5px 40px;
+	margin: 15px auto;
+	
+}
+h3{
+	font-weight: 500;
+}
+#qinp{
+	font-weight: bold;
+	width: auto;
+}
+#qm {
+	width: 300px;
+	display: inline;
+	margin-left: 50px;
+}
+#hostslist {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	grid-gap: 20px;
+}
+.hosts {
+	width: 80%;
+}
+#updbtn{
+	float: right;
+}

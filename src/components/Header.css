@@ -11,7 +11,7 @@
 	margin: 0 auto;
 	display: grid;
 	grid-template-columns: 1fr 1fr;
-	max-width: 1024px;
+	max-width: 1150px;
 }
 #logo {
 	width: 45px;
@@ -27,7 +27,7 @@ a {
 	margin: 0 auto;
 	display: grid;
 	grid-template-columns: 260px 1fr 260px;;
-	max-width: 1150px;
+	max-width: 1200px;
 }
 .logo {
 	width: auto;

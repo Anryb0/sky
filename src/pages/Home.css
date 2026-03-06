@@ -1,6 +1,8 @@
 .info {
 	text-align: justify;
 	margin-bottom: 10px;
+	font-size: 17px;
+	padding: 20px;
 }
 #try {
 	width: auto;
@@ -15,11 +17,24 @@
     vertical-align: middle;
 	font-weight: bold;
 	color: black;
-	font-size: 18px;
+	font-size: 22px;
 }
 #try:hover{
 	transform: scale(1.04);
 	box-shadow: 0 4px 25px 0 rgba(0,255,150,0.4);
 	border: 2px solid rgba(0,255,150,0.4);
 	text-decoration: none;
+}
+.articleimg {
+	border-radius: 15px;
+	width: 100%;
+	margin: auto auto;
+}
+h2{
+	margin-top: 5px;
+}
+#p1, #p2, #p3, #p4 {
+	display:grid;
+	grid-template-columns: 1fr 1fr;
+	grid-gap: 30px;
 }
