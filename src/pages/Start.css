@@ -90,3 +90,11 @@ h3{
 #updbtn{
 	float: right;
 }
+#noserveralert {
+	display: inline-block;
+	
+	width: 97%;
+}
+#hostslist{
+	margin-bottom: 10px;
+}

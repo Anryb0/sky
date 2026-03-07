@@ -18,6 +18,7 @@ function Start() {
   const [selectedQ, setSelectedQ] = useState(1);
   const [totalPrice, setTotalPrice] = useState(0);
   const [servers, setServers] = useState(null);
+  const [noHostsState, setNoHostsState] = useState(false);
   useEffect(() => {
 	let xhr = new XMLHttpRequest();
 	xhr.withCredentials = true;
@@ -30,14 +31,16 @@ function Start() {
           setLoading(false);
           setResources(response.resources);
 		  var qarray = [];
+		  var tmp = 0;
 		  response.resources.forEach((item) => {
 			  var qres = new Object();
 			  qres.name = item.name;
 			  qres.q = item.min_value;
 			  qres.price = item.price;
-			  setTotalPrice(totalPrice + (item.min_value*item.price))
+			  tmp += item.min_value * item.price;
 			  qarray.push(qres);
 		  })
+		  setTotalPrice(tmp)
 		  setResourcesQ(qarray);
           setOsData(response.os);
           setSelectedOs(response.os[0].os_id);
@@ -64,12 +67,14 @@ function Start() {
 			let response = JSON.parse(xhr2.responseText);
 			if(response.success){
 				setHosts(response.hosts_avail);
+				var noHosts = true;
 				response.hosts_avail.forEach((item)=>{
 					if(item.avail == true){
-						setSelectedHost(item.id)
+						noHosts = false
+						setSelectedHost(item.host_id)
 					}
 				})
-				setSelectedHost(response.hosts_avail[0].id);
+				setNoHostsState(noHosts);
 				setLoadingHosts(false);
 			}
 			else{
@@ -85,10 +90,14 @@ function Start() {
     if(selectedQ < 1 || selectedQ > 20){
       openModal('Введите корректное количество от 1 до 20', true);
     }
+	if(selectedHost == null){
+	  openModal('Выберите сервер', true);
+	}
     else{
       let xhr = new XMLHttpRequest;
       let formData = new FormData();
-      formData.append('resourcesQ',resourcesQ);
+	  formData.append('host',selectedHost);
+      formData.append('resources',JSON.stringify(resourcesQ));
       formData.append('q',selectedQ);
       formData.append('os_id',selectedOs);
       xhr.withCredentials = true;
@@ -128,8 +137,6 @@ function Start() {
 		  console.log(item, pr)
 	  })
 	  setTotalPrice(pr * selectedQ);
-	  console.log(resources)
-	  console.log(resourcesQ)
   }
   const ChangeOs = (id) => {
     setSelectedOs(id);
@@ -138,6 +145,10 @@ function Start() {
 	setTotalPrice(totalPrice/selectedQ*event.target.value);
     setSelectedQ(event.target.value);
   } 
+  const handleHostClick = (id) => {
+	  setSelectedHost(id);
+	  console.log(selectedHost)
+  }
 return (
   <>
     <Header />
@@ -243,15 +254,13 @@ return (
         <b>{item.name}</b> (10.8.0.{item.ip}) - {item.avail === true ? 'online' : 'offline'}
       </div>
     );
-  })}
-	</div>
+  })}	</div><hr/>
+	{noHostsState ? (<span className='glassy error' id='noserveralert'><b>Извините, на данный момент нет доступных серверов😥</b></span>) : (<>        <h3>
+          <button onClick={Continue} id='noserveralert'>▶️▶️ Перейти на страницу оплаты ▶️▶️</button>
+        </h3></>)}
+
 		  </>
         )}
-        
-        <h3>
-          <b>5 - </b>Переходите сюда 👉 
-          <button onClick={Continue} id='pay'>Оплатить</button>
-        </h3>
       </div>
     </main>
   </>

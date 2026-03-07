@@ -39,24 +39,53 @@
   }
   $stmt->close();
   $status = 'Ждёт оплаты';
-  $plan_id = (int)$_POST['plan_id'];
+  $resources = json_decode($_POST['resources'], true);
   $q = (int)$_POST['q'];
   $os_id = (int)$_POST['os_id'];
   if(!($q > 0 && $q < 21)){
+    echo json_encode(['success'=>false,'message'=>'Недопустимый срок аренды']);
+    $conn->close();
     exit;
   }
-  $stmt = $conn->prepare('select price from plans where plan_id = ?');
-  $stmt->bind_param('i',$plan_id);
+  $stmt = $conn->prepare('select * from resources');
   $stmt->execute();
   $result = $stmt->get_result();
-  $row = $result->fetch_assoc();
-  $sum = $row['price']*$q;
+  $resources_prices = [];
+  while($row = $result->fetch_assoc()){
+	$resources_prices [] = [
+		'name' => $row['name'],
+		'price' => $row['price'],
+		'min_value' => $row['min_value'],
+		'max_value' => $row['max_value']
+	];
+  }
   $stmt->close();
+  $price_for_month = 0;
+  forEach($resources as $resource){
+	  forEach($resources_prices as $resprice){
+		  if($resource['name'] == $resprice['name']){
+			  if(!($resource['q'] >= $resprice['min_value'] && $resource['q'] <= $resprice['max_value'])){
+				echo json_encode(['success'=>false,'message'=>'Недопустимое количество ресурсов']);
+				$conn->close();
+				exit;
+			  }
+			  $price_for_month = $price_for_month + ($resource['price']*$resource['q']);
+		  }
+		  
+	  }
+  }
+  $totalprice = $price_for_month*$q;
+  if($totalprice == 0){
+	  echo json_encode(['success'=>false,'message'=>$resources]);
+	  exit;
+  }
+  
   $randomSuffix = bin2hex(random_bytes(2));
   $userName = preg_replace("/[^a-zA-Z0-9]/", "", $user['name']);
   $name = $userName.'-'.$randomSuffix;
-  $stmt=$conn->prepare('insert into servers (status, plan_id,user_id,name,os_id) values (?,?,?,?,?)');
-  $stmt->bind_param('siisi',$status,$plan_id,$user['id'], $name,$os_id);
+  $host = $_POST['host'];
+  $stmt=$conn->prepare('insert into servers (status, user_id,name,os_id,host) values (?,?,?,?,?)');
+  $stmt->bind_param('sisii',$status,$user['id'], $name,$os_id,$host);
   $stmt->execute();
   $server=$conn->insert_id;
   $client = new Client();
@@ -64,7 +93,7 @@
   $payment = $client->createPayment(
         array(
             'amount' => array(
-                'value' => $sum,
+                'value' => $totalprice,
                 'currency' => 'RUB',
             ),
             'confirmation' => array(
