@@ -88,6 +88,14 @@
   $stmt->bind_param('sisii',$status,$user['id'], $name,$os_id,$host);
   $stmt->execute();
   $server=$conn->insert_id;
+  $stmt->close();
+    //сохранение информации о кол-ве ресурсов
+  forEach($resources as $resource){
+	$stmt = $conn->prepare('insert into servers_resources (resource_id, server_id, q) values (?,?,?)');
+	$stmt->bind_param('iii',$resource['resource_id'], $server, $resource['q']);
+	$stmt->execute();
+	$stmt->close();
+  }
   $client = new Client();
   $client->setAuth($_ENV['U_ID'], $_ENV['U_SECRET']);
   $payment = $client->createPayment(

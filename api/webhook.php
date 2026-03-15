@@ -12,19 +12,17 @@ try {
     $notificationObject = $factory->factory($data);
     $responseObject = $notificationObject->getObject();
     
-    $paymentId = $responseObject->getId(); // Исправлено: было $payment->getId()
-    $eventType = $notificationObject->getEvent(); // Исправлено: было $requestBody['event']
+    $paymentId = $responseObject->getId(); 
+    $eventType = $notificationObject->getEvent();
 
     switch ($eventType) {
         case NotificationEventType::PAYMENT_SUCCEEDED:
-            // Твой код обработки успешного платежа
             $stmt = $conn->prepare('UPDATE payments SET link = NULL WHERE payment_id = ?');
             $stmt->bind_param('s', $paymentId);
             $stmt->execute();
             $stmt->close();
             
-            // Получаем информацию о платеже
-            $stmt = $conn->prepare('SELECT p.server_id, s.user_id, p.q FROM payments p LEFT JOIN servers s ON p.server_id = s.server_id WHERE p.payment_id = ?');
+            $stmt = $conn->prepare('SELECT p.server_id, s.user_id, p.q, h.ip FROM payments p LEFT JOIN servers s ON p.server_id = s.server_id left join hosts h on h.host_id = s.hosts WHERE p.payment_id = ?');
             $stmt->bind_param('s', $paymentId);
             $stmt->execute();
             $result = $stmt->get_result();
@@ -37,9 +35,9 @@ try {
             $server = $row['server_id'];
             $user = $row['user_id'];
             $q = $row['q'];
+			$host = $row['ip'];
             $stmt->close();
 
-            // Получаем IP пользователя
             $stmt = $conn->prepare('SELECT ip FROM users WHERE user_id = ?');
             $stmt->bind_param('i', $user);
             $stmt->execute();
@@ -48,7 +46,6 @@ try {
             $userip = $row['ip'];
             $stmt->close();
 
-            // Если у пользователя нет IP, генерируем новый
             if ($userip == null) {
                 $stmt = $conn->prepare('SELECT IFNULL(MAX(ip), 0) as maxip FROM users');
                 $stmt->execute();
@@ -70,7 +67,6 @@ try {
                 }
             }
 
-            // Получаем максимальный IP для сервера
             $stmt = $conn->prepare('SELECT IFNULL(MAX(ip), 0) as maxip FROM servers');
             $stmt->execute();
             $result = $stmt->get_result();
@@ -85,7 +81,6 @@ try {
             $iv = openssl_random_pseudo_bytes(openssl_cipher_iv_length($cipher));
             $encryptedPassword = openssl_encrypt($plainPassword, $cipher, $key, 0, $iv);
             
-            // Обновляем информацию о сервере
             $stmt = $conn->prepare('UPDATE servers SET ip = ?, status = ?, password = ?, expires_at = DATE_ADD(NOW(), INTERVAL ? MONTH) WHERE server_id = ?');
             $stmt->bind_param('issii', $maxip, $status, $encryptedPassword, $q, $server);
             $stmt->execute();
@@ -98,7 +93,6 @@ try {
                 throw new Exception('Failed to generate VPN for server');
             }
 
-            // Получаем детали сервера
             $stmt = $conn->prepare('SELECT s.name, p.cpus, p.ram, p.drive, o.filename FROM servers s LEFT JOIN plans p ON s.plan_id = p.plan_id LEFT JOIN operating_systems o ON s.os_id = o.os_id WHERE s.server_id = ?');
             $stmt->bind_param('i', $server);
             $stmt->execute();
@@ -114,8 +108,9 @@ try {
             $local_path = "/network/configs/skyserver{$maxip}.ovpn";
             $remote_path = "/network/{$row['name']}.ovpn";
             
-            // SSH соединение
-            $connection = ssh2_connect('10.8.0.2', 22);
+			
+			
+            $connection = ssh2_connect('10.8.0.'.$host, 22);
             if (!$connection) {
                 throw new Exception('SSH connection failed');
             }
@@ -156,7 +151,6 @@ try {
             break;
             
         default:
-            // Другие типы событий можно игнорировать
             break;
     }
 
@@ -168,7 +162,6 @@ try {
     $error_message = date('Y-m-d H:i:s') . ' : ' . $e->getMessage() . PHP_EOL;
     file_put_contents('error_log.txt', $error_message, FILE_APPEND);
     
-    // Логируем дополнительные данные для отладки
     if (isset($data)) {
         file_put_contents('error_log.txt', 'Request data: ' . json_encode($data) . PHP_EOL, FILE_APPEND);
     }

@@ -34,6 +34,7 @@ function Start() {
 		  var tmp = 0;
 		  response.resources.forEach((item) => {
 			  var qres = new Object();
+			  qres.resource_id = item.resource_id;
 			  qres.name = item.name;
 			  qres.q = item.min_value;
 			  qres.price = item.price;
