@@ -22,7 +22,7 @@ try {
             $stmt->execute();
             $stmt->close();
             
-            $stmt = $conn->prepare('SELECT p.server_id, s.user_id, p.q, h.ip FROM payments p LEFT JOIN servers s ON p.server_id = s.server_id left join hosts h on h.host_id = s.hosts WHERE p.payment_id = ?');
+            $stmt = $conn->prepare('SELECT p.server_id, s.user_id, p.q, h.ip FROM payments p LEFT JOIN servers s ON p.server_id = s.server_id left join hosts h on h.host_id = s.host WHERE p.payment_id = ?');
             $stmt->bind_param('s', $paymentId);
             $stmt->execute();
             $result = $stmt->get_result();
@@ -75,14 +75,10 @@ try {
             $stmt->close();
             
             $status = 'Устанавливается';
-            $key = $_ENV['SERVER_PASS'];
-            $cipher = "aes-256-cbc";
             $plainPassword = bin2hex(random_bytes(4));
-            $iv = openssl_random_pseudo_bytes(openssl_cipher_iv_length($cipher));
-            $encryptedPassword = openssl_encrypt($plainPassword, $cipher, $key, 0, $iv);
             
             $stmt = $conn->prepare('UPDATE servers SET ip = ?, status = ?, password = ?, expires_at = DATE_ADD(NOW(), INTERVAL ? MONTH) WHERE server_id = ?');
-            $stmt->bind_param('issii', $maxip, $status, $encryptedPassword, $q, $server);
+            $stmt->bind_param('issii', $maxip, $status, $plainPassword, $q, $server);
             $stmt->execute();
             $stmt->close();
             
@@ -108,7 +104,6 @@ try {
             $local_path = "/network/configs/skyserver{$maxip}.ovpn";
             $remote_path = "/network/{$row['name']}.ovpn";
             
-			
 			
             $connection = ssh2_connect('10.8.0.'.$host, 22);
             if (!$connection) {
@@ -160,9 +155,9 @@ try {
 } catch (Exception $e) {
     http_response_code(400);
     $error_message = date('Y-m-d H:i:s') . ' : ' . $e->getMessage() . PHP_EOL;
-    file_put_contents('error_log.txt', $error_message, FILE_APPEND);
+    file_put_contents('./error_log.txt', $error_message, FILE_APPEND);
     
     if (isset($data)) {
-        file_put_contents('error_log.txt', 'Request data: ' . json_encode($data) . PHP_EOL, FILE_APPEND);
+        file_put_contents('./error_log.txt', 'Request data: ' . json_encode($data) . PHP_EOL, FILE_APPEND);
     }
 }

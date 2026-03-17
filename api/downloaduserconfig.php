@@ -33,7 +33,7 @@
 	$result = $stmt->get_result();
 	$row = $result->fetch_assoc();
 	$filename='skyuser'.$row['ip'].'.ovpn';
-	$filepath = "/etc/openvpn/client/" . $filename;
+	$filepath = "/network/configs/" . $filename;
 	if (file_exists($filepath)) {
     header('Content-Description: File Transfer');
     header('Content-Type: application/x-openvpn-profile');

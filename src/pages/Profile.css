@@ -5,8 +5,11 @@
 }
 #stop{
 	display: grid;
-	grid-template-columns: 200px 100px 1fr 170px;
+	grid-template-columns: 200px 100px 1fr 200px;
 	margin: 2px 15px;
+	width: 100%;
+	font-size: 14px;
+	font-weight: bold;
 }
 .s {
 	display: grid;
@@ -14,4 +17,8 @@
 }
 .r{
 	float: right;
+}
+.w {
+	width: 100%;
+	text-align: right;
 }

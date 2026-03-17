@@ -1,0 +1,7 @@
+apt install nginx php-fpm python3
+py -m pip install libvirt-python
+timedatectl set-timezone Europe/Moscow
+apt-get install chrony
+systemctl enable chrony
+apt-get install qemu-system qemu-kvm libvirt-daemon-system virtinst libosinfo-bin
+systemctl enable libvirtd
