@@ -1,5 +1,6 @@
 #maingrid .glassy {
 	text-align: center;
+	width: 87%;
 }
 #maingrid {
 	display: grid;
@@ -9,4 +10,7 @@
 input{
 	margin: 3px;
 	width: 90%;
+}
+#l1 hr, #r2 hr {
+	margin: 10px 0;
 }

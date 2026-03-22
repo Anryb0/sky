@@ -2,6 +2,9 @@
 	margin: 10px auto;
 	display: grid;
 	grid-template-columns: 400px 1fr;
+	justify-content: center;
+	align-items: center;
+	justify-items: stretch
 }
 #stop{
 	display: grid;
@@ -21,4 +24,12 @@
 .w {
 	width: 100%;
 	text-align: right;
+}
+button.right {
+	width: auto;
+}
+#topheader {
+	display: grid;
+	grid-template-columns: 1fr 100px;
+	margin-bottom: 0;
 }

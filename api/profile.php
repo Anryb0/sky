@@ -58,6 +58,55 @@
 		}
 		echo json_encode(['success'=>true,'servers'=>$servers]);
 	}
+	if($mode == 2){
+		$serverId = $_POST['serverId'];
+		$stmt = $conn->prepare('select name, user_id from servers where server_id = ?');
+		$stmt->bind_param('i',$serverId);
+		$stmt->execute();
+		$result = $stmt->get_result();
+		if($result->num_rows == 0){
+			echo json_encode(['success'=>false]);
+			$conn->close();
+			exit();
+		}
+		$row = $result->fetch_assoc();
+		$data = $row;
+		$stmt->close();
+		if($data['user_id'] != $user['id']){
+			echo json_encode(['success'=>false]);
+			$conn->close();
+			exit();
+		}
+		else{
+			echo json_encode(['success'=>true,'data'=>$data]);
+		}
+	}
+	if($mode == 3){
+		$stmt = $conn->prepare('SELECT ip FROM users WHERE user_id = ?');
+		$stmt->bind_param('i', $user['id']);
+		$stmt->execute();
+		$result = $stmt->get_result();
+		$row = $result->fetch_assoc();
+		$userip = $row['ip'];
+		$stmt->close();
+		
+		if ($userip == null) {
+			$stmt = $conn->prepare('SELECT IFNULL(MAX(ip), 0) as maxip FROM users');
+			$stmt->execute();
+			$result = $stmt->get_result();
+			$row = $result->fetch_assoc();
+			$maxip = ($row['maxip'] != 0) ? $row['maxip'] + 1 : 129;
+			$stmt->close();
+			$userip = $maxip;
+			$stmt = $conn->prepare('UPDATE users SET ip = ? WHERE user_id = ?');
+			$stmt->bind_param('ii', $userip, $user['id']);
+			$stmt->execute();
+			$stmt->close();
+		}
+		$name = 'skyuser' . $userip;
+        exec("/network/client-vpn-generate.sh $name $userip", $output, $return_var);
+		echo json_encode(['success'=>true]);
+	}
 	$conn->close();
 ?>
 

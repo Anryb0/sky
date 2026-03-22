@@ -83,7 +83,7 @@ function Register(props) {
 				<div id='maingrid'>
 					<div></div>
 					<div id='l1' className='glassy'>
-						<h3>Войти</h3>
+						<h3><b>Войти</b></h3>
 						<hr />
 						<form className="lform" id='lform' onSubmit={login}>
 							<div className="lform">
@@ -98,7 +98,7 @@ function Register(props) {
 						</form>
 					</div>
 					<div id='r2' className='glassy'>
-						<h3>Зарегистрироваться</h3>
+						<h3><b>Зарегистрироваться</b></h3>
 						<hr />
 						<form className="rform" id='rform' autoComplete="off" onSubmit={regist}>
 							<div className="rform">
