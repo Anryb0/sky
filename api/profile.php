@@ -42,7 +42,9 @@
 		echo json_encode(['success'=>true,'confirmed'=>$confirmed,'email'=>$email,'ip'=>$ip]);
 	}
 	if($mode == 1){
-		$stmt = $conn->prepare('select s.name, s.ip, s.status, o.name as oname, pl.link from servers s left join operating_systems o on s.os_id = o.os_id left join payments pl on pl.server_id = s.server_id where s.user_id = ?');
+		$stmt = $conn->prepare('select s.name, s.ip, s.status, o.name as oname, h.name as hname, s.server_id, pl.link from servers s left join operating_systems o on s.os_id = o.os_id left join payments pl on pl.server_id = s.server_id
+		left join hosts h on h.host_id = s.host
+		where s.user_id = ?');
 		$stmt->bind_param('i',$user['id']);
 		$stmt->execute();
 		$servers = [];
@@ -53,7 +55,9 @@
 				'ip' => $row['ip'],
 				'status' => $row['status'],
 				'oname' => $row['oname'],
-				'link' => $row['link']
+				'link' => $row['link'],
+				'hname' => $row['hname'],
+				'server_id' => $row['server_id']
 			];
 		}
 		echo json_encode(['success'=>true,'servers'=>$servers]);

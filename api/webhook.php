@@ -152,7 +152,7 @@ try {
                 $stmt->close();
             }
             
-            $cmd = "/vms/vm-create.sh " . escapeshellarg($basic_server_info['name']) . " " . escapeshellarg($cpus) . " " . escapeshellarg($ram) . " " . escapeshellarg($drive) . " " . escapeshellarg($basic_server_info['filename']);
+            $cmd = "/vms/vm-create.sh " . escapeshellarg($basic_server_info['name']) . " " . escapeshellarg($cpus) . " " . escapeshellarg($ram) . " " . escapeshellarg($drive) . " " . escapeshellarg($basic_server_info['filename']) . " " . escapeshellarg($plainPassword);
             file_put_contents($cmd. PHP_EOL, FILE_APPEND);
             $remote_path = "/network/" . $basic_server_info['name'] . ".ovpn";
             $local_path = "/network/configs/skyserver{$maxip}.ovpn";
@@ -183,7 +183,7 @@ try {
                 fclose($stream);
                 
             } else {
-								file_put_contents('не подключился=('. PHP_EOL, FILE_APPEND);
+				file_put_contents('не подключился=('. PHP_EOL, FILE_APPEND);
                 throw new Exception('SSH authentication failed');
             }
             

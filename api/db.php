@@ -26,7 +26,7 @@ if (session_status() === PHP_SESSION_NONE) {
     ]);
     session_start();
 }
-$allowed = ['http://localhost:5173', 'https://anryb0.ru'];
+$allowed = ['http://localhost:5173', 'https://anryb0.ru','http://155.212.129.128'];
 if (isset($_SERVER['HTTP_ORIGIN']) && in_array($_SERVER['HTTP_ORIGIN'], $allowed)) {
     header("Access-Control-Allow-Origin: ".$_SERVER['HTTP_ORIGIN']);
 }

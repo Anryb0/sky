@@ -8,7 +8,7 @@
 }
 #stop{
 	display: grid;
-	grid-template-columns: 200px 100px 1fr 200px;
+	grid-template-columns: 200px 120px 1fr 250px 200px;
 	margin: 2px 15px;
 	width: 100%;
 	font-size: 14px;
@@ -16,7 +16,8 @@
 }
 .s {
 	display: grid;
-	grid-template-columns: 200px 100px 1fr 170px;
+	grid-template-columns: 200px 120px 1fr 250px 170px;
+	align-items: center
 }
 .r{
 	float: right;
@@ -32,4 +33,13 @@ button.right {
 	display: grid;
 	grid-template-columns: 1fr 100px;
 	margin-bottom: 0;
+}
+.sm{
+	width: 14px;
+	height: 14px;
+	margin: 0;
+	display: inline-block;
+}
+.e{
+	font-weight: inherit;
 }

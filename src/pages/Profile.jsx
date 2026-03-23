@@ -39,8 +39,8 @@ function Profile(){
 				openModal('Письмо успешно отправлено');
 			}
 			else{
-        openModal(response.message,true);
-      }
+				openModal(response.message,true);
+			}
 		} 
 	}
 	function loadBasicInfo(){
@@ -108,6 +108,7 @@ function Profile(){
 			if(xhr.status == 200){
 				let response = JSON.parse(xhr.responseText);
 				setServers(response.servers);
+				console.log(response.servers);
 				setLoadingServers(false);
 			}
 			else{
@@ -160,10 +161,27 @@ function Profile(){
 			<h3><b>Ваши сервера</b><button onClick={() => {window.location.href ="https://anryb0.ru/sky/start"}} className='r'>+</button><button onClick={() => {loadServers()}} className='r'>Обновить</button></h3>
 			{
 				loadingServers ? (<div className='spinner'></div>) : servers.length > 0 ? (<>
-					<div id='stop'><span>Название</span><span>IP</span><span>Статус</span><span>ОС</span></div>
+					<div id='stop'><span>Название</span><span>IP</span><span>Статус</span><span>Хост</span><span>ОС</span></div>
 					<hr />
 					{servers.map((item)=> {
-						return (<div className='glassy ilist s'><b>{item.name}</b><span>10.8.0.{item.ip}</span><span>{item.status == 'Ждёт оплаты' ? (<button onClick={() => {window.location.href=item.link}}>Ждёт оплаты</button>) : (item.status)}</span><span>{item.oname}</span></div>)
+						return (
+						  <Link className='glassy ilist s e' to={'../control?i='+item.server_id}>
+							<b>{item.name}</b>
+							<span>10.8.0.{item.ip}</span>
+							<span>
+							  {item.status == 'Ждёт оплаты' ? (
+								<button onClick={() => { window.location.href = item.link }}>Ждёт оплаты</button>
+							  ) : item.status == 'Устанавливается' ? (
+								<>
+								  <div className='spinner sm'></div> Устанавливается
+								</>
+							  ) : (
+								item.status
+							  )}
+							</span>
+						
+						
+						<span>{item.hname}</span><span>{item.oname}</span></Link>)
 					})}</> 
 				) : (<div className='t'>❌ У вас пока нет серверов<span className='right'></span></div>)
 			}
