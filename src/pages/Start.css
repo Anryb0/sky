@@ -3,18 +3,23 @@
   font-weight: bold;
   text-align: right;
 }
+#configurator{
+	display: grid;
+	grid-template-columns: 735px 300px;
+	grid-gap: 15px;
+}
 .plan{
   display: grid;
   grid-template-columns: 100px 300px 1fr;
 }
 .selected{
-  background: rgba(0,255,150,0.4);
+  background: rgba(65, 161, 250,0.4);
 }
 #period{
   width: 50px;
 }
 .qc input {
-  width: 250px;
+  width: 92%;
   height: 10px;
   margin: 15px 0;
   margin-right: 5px;
@@ -25,7 +30,7 @@
 .qc input::-webkit-slider-thumb {
   width: 10px;
   height: 10px;
-  background-color: rgba(0,255,150,1);
+  background-color: rgba(65, 161, 250,0.7);
   appearance: none;
   border-radius: 50%;
 }
@@ -33,18 +38,25 @@
 .qc input::-moz-range-thumb {
   width: 10px;
   height: 10px;
-  background-color: rgba(0,255,150,0.4);
+  background-color: rgba(65, 161, 250,0.4);
   appearance: none;
 }
 #resgrid{
 	display: grid;
-	grid-template-columns: 1fr 1fr 1fr;
+	grid-template-columns: 1fr 1fr;
+}
+#secondgrid {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
 }
 #resgrid div{
-	width: 90%;
+	width: 88%;
+}
+#secondgrid div {
+	width: 92%;
 }
 .qc {
-	width: 100%;
+	width: 100%!important;
 	margin: 0;
 	display: grid;
 	grid-template-columns: 25px 1fr 30px;
@@ -97,4 +109,33 @@ h3{
 }
 #hostslist{
 	margin-bottom: 10px;
+}
+.ce{
+	text-align: center;
+}
+#qc2{
+	width: auto;
+	grid-gap:0;
+	justify-content: start;
+}
+#rside{
+	display: grid;
+	width: 100%;
+	grid-template-columns: 1fr;
+	
+}
+.rs {
+	width: 87%;
+}
+#total p {
+	font-size: 20px;
+	font-weight: bold;
+	margin: 7px 0 0px 0;
+}
+#total{
+	text-align: center;
+}
+.ico {
+	width: 25px;
+	margin-right: 5px;
 }

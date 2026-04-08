@@ -5,7 +5,8 @@ html {
 }
 body {
 	margin: 70px 0;
-	background: #e1e1e1;
+	background: #63d3ff;
+background: radial-gradient(circle, rgba(99, 211, 255, 0.23) 0%, rgba(153, 226, 255, 0.61) 45%, rgba(255, 255, 255, 1) 100%, rgba(237, 221, 83, 1) 100%);
 	min-width: 1070px;
 }
 main {
@@ -53,8 +54,8 @@ input {
 	font-size: 15px;
 }
 input:hover, input:focus {
-	box-shadow: 0 4px 25px 0 rgba(0,255,150,0.4);
-	border: 2px solid rgba(0,255,150,0.4);
+	box-shadow: 0 4px 25px 0 rgba(65, 161, 250,0.4);
+	border: 2px solid rgba(65, 161, 250,0.4);
 	outline: none;
 }
 input.but {
@@ -62,11 +63,11 @@ input.but {
 	font-weight: bold;
 	width: auto;
 	padding: 3px 10px;
-	background: rgba(0,255,150,0.2);
+	background: rgb(65, 161, 250,0.2);
 }
 button {
 	width: auto;
-	background: rgb(0,255,150,0.2);
+	background: rgb(65, 161, 250,0.2);
 	backdrop-filter: blur(1px); 
 	border: 2px solid rgba(255,255,255,0.2); 
 	border-radius: 10px;
@@ -84,8 +85,8 @@ button {
 }
 button:hover, .ilist:hover{
 	transform: scale(1.04);
-	box-shadow: 0 4px 25px 0 rgba(0,255,150,0.4);
-	border: 2px solid rgba(0,255,150,0.4);
+	box-shadow: 0 4px 25px 0 rgba(65, 161, 250,0.4);
+	border: 2px solid rgba(65, 161, 250,0.4);
 	text-decoration: none;
 	cursor: pointer;
 }

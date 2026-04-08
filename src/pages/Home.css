@@ -3,12 +3,13 @@
 	margin-bottom: 10px;
 	font-size: 17px;
 	padding: 20px;
+	height: 542px;
 }
-#try {
+#try, .try {
 	width: auto;
-	background: rgb(0,255,150,0.2);
+	background: rgb(65, 161, 250,0.4);
 	backdrop-filter: blur(1px); 
-	border: 2px solid rgba(255,255,255,0.2); 
+	border: 3px solid rgba(255,255,255,0.4); 
 	border-radius: 10px;
 	padding: 5px;
 	margin: 10px 5px;
@@ -18,11 +19,12 @@
 	font-weight: bold;
 	color: black;
 	font-size: 22px;
+	padding: 7px 40px;
 }
-#try:hover{
+#try:hover, .try:hover {
 	transform: scale(1.04);
-	box-shadow: 0 4px 25px 0 rgba(0,255,150,0.4);
-	border: 2px solid rgba(0,255,150,0.4);
+	box-shadow: 0 4px 25px 0 rgba(65, 161, 250,0.4);
+	border: 2px solid rgba(65, 161, 250,0.4);
 	text-decoration: none;
 }
 .articleimg {
@@ -37,4 +39,16 @@ h2{
 	display:grid;
 	grid-template-columns: 1fr 1fr;
 	grid-gap: 30px;
+}
+video {
+	height: 85%;
+	margin: 5px 9%;
+	border-radius: 15px;
+}
+:root {
+  --swiper-navigation-color: rgb(65, 161, 250,0.4); /* или ваш акцентный цвет */
+  --swiper-pagination-color: rgb(65, 161, 250,0.4);
+}
+.swiper {
+	box-shadow: none;
 }

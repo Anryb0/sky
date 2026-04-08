@@ -44,7 +44,7 @@ a {
 }
 .lau {
 	width: auto;
-	background: rgb(0,255,150,0.2);
+	background: rgb(65, 161, 250,0.2);
 	backdrop-filter: blur(1px); 
 	border: 2px solid rgba(255,255,255,0.2); 
 	border-radius: 10px;
@@ -63,8 +63,8 @@ a {
 }
 .lau:hover{
 	transform: scale(1.04);
-	box-shadow: 0 4px 25px 0 rgba(0,255,150,0.4);
-	border: 2px solid rgba(0,255,150,0.4);
+	box-shadow: 0 4px 25px 0 rgba(65, 161, 250,0.4);
+	border: 2px solid rgba(65, 161, 250,0.4);
 	text-decoration: none;
 }
 #search {

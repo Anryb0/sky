@@ -1,0 +1,14 @@
+.m {
+	margin: 15px auto;
+}
+#controlgrid {
+	display: grid;
+	grid-template-columns: 1fr 1fr 1fr;
+}
+#controlgrid .glassy{
+	width: 85%;
+}
+
+.l {
+	margin: 0 5px;
+}

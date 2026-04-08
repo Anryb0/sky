@@ -158,7 +158,7 @@ function Profile(){
 						</div>)
 			}
 			<hr />
-			<h3><b>Ваши сервера</b><button onClick={() => {window.location.href ="https://anryb0.ru/sky/start"}} className='r'>+</button><button onClick={() => {loadServers()}} className='r'>Обновить</button></h3>
+			<h3><b>Ваши сервера</b><button onClick={() => {window.location.href ="/sky/start"}} className='r'>+</button><button onClick={() => {loadServers()}} className='r'>Обновить</button></h3>
 			{
 				loadingServers ? (<div className='spinner'></div>) : servers.length > 0 ? (<>
 					<div id='stop'><span>Название</span><span>IP</span><span>Статус</span><span>Хост</span><span>ОС</span></div>
