@@ -97,6 +97,9 @@ function Profile(){
 		}
 	}
 	function loadServers(){
+		if(!authLoading && !user){
+			navigate('/register');
+		}
 		setLoadingServers(true);
 		let xhr = new XMLHttpRequest();
 		let formData = new FormData();
@@ -136,8 +139,13 @@ function Profile(){
 			}
 		}
 	}
+	function checkServers(){
+		
+		
+		
+	}
 	if(!authLoading && !user){
-		navigate('/');
+		navigate('/register');
 	}
 	return (
 		<>
@@ -146,11 +154,11 @@ function Profile(){
 			{loading ? (<div className='spinner center'></div>) : ( 
 				<div id='maininfo'>
 					<h3 id='topheader'><b>{greeting}, {user}</b><button onClick={() => {loadBasicInfo()}}>Обновить</button></h3>
-						{ response.confirmed ? (<div className='glassy t'>✔️ Подтвержденный аккаунт<span className='right'>Ваша почта: <b>{response.email}</b></span></div>) : (<div className='glassy error'>Ваша почта: <b>{response.email}</b>
+						{ response.confirmed ? (<div className='glassy t'><span className='green'>Подтвержденный аккаунт</span><span className='right'>Ваша почта: {response.email}</span></div>) : (<div className='glassy error'>Ваша почта: <b>{response.email}</b>
 						<span className='right'>❌ Ваш аккаунт не подтвержден. Проверьте почту</span><button className='green' onClick={sendNewLink}>Отправить еще ссылку</button></div>)
 						}
 						{
-							response.ip ? (<div className='glassy t'>✔️ Сеть настроена<span className='right'><button onClick={() => {window.location.href ="https://anryb0.ru/sky/api/downloaduserconfig.php"}}>Скачать VPN конфигурацию</button>
+							response.ip ? (<div className='glassy t'><span className='green'>Сеть настроена</span><span className='right'><button onClick={() => {window.location.href ="https://anryb0.ru/sky/api/downloaduserconfig.php"}}>Скачать VPN конфигурацию</button>
 							<button onClick={() => {addUserConfig()}}>Пересоздать</button>
 							<button onClick={() => {window.location.href ="https://anryb0.ru/sky/api/downloadovpn.php"}}>Скачать OpenVPN Connect</button></span></div>) :
 							(<div className='glassy t'>❌ У вас пока нет VPN конфигураций  <span className='right'><button onClick={() => {addUserConfig()}}>Создать</button></span></div>)
@@ -158,10 +166,10 @@ function Profile(){
 						</div>)
 			}
 			<hr />
-			<h3><b>Ваши сервера</b><button onClick={() => {window.location.href ="/sky/start"}} className='r'>+</button><button onClick={() => {loadServers()}} className='r'>Обновить</button></h3>
+			<h3><b>Ваши серверы</b><button onClick={() => {window.location.href ="/sky/start"}} className='r'>+</button><button onClick={() => {loadServers()}} className='r'>Ping</button><button onClick={() => {loadServers()}} className='r'>Обновить</button></h3>
 			{
 				loadingServers ? (<div className='spinner'></div>) : servers.length > 0 ? (<>
-					<div id='stop'><span>Название</span><span>IP</span><span>Статус</span><span>Хост</span><span>ОС</span></div>
+					<div id='stop'><span>Название</span><span>IP</span><span>Статус</span><span>Хост</span></div>
 					<hr />
 					{servers.map((item)=> {
 						return (
@@ -173,15 +181,15 @@ function Profile(){
 								<button onClick={() => { window.location.href = item.link }}>Ждёт оплаты</button>
 							  ) : item.status == 'Устанавливается' ? (
 								<>
-								  <div className='spinner sm'></div> Устанавливается
+								  <div className='spinner sm'></div><span className='grey'>  Устанавливается</span>
 								</>
-							  ) : (
+							  ) : item. status == 'Работает' ? (<span className='green'>Работает</span>) : (
 								item.status
 							  )}
 							</span>
 						
 						
-						<span>{item.hname}</span><span>{item.oname}</span></Link>)
+						<span>{item.hname}</span></Link>)
 					})}</> 
 				) : (<div className='t'>❌ У вас пока нет серверов<span className='right'></span></div>)
 			}

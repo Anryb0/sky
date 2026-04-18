@@ -3,7 +3,6 @@ import Header from '../components/Header.jsx';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination, Autoplay } from 'swiper/modules';
 
-// Импорт стилей Swiper
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
@@ -14,7 +13,6 @@ function Home() {
     <>
       <Header />
       <main>
-        {/* Карусель для информационных блоков */}
         <Swiper
           modules={[Navigation, Pagination, Autoplay]}
           spaceBetween={30}
@@ -22,25 +20,23 @@ function Home() {
           navigation
           pagination={{ clickable: true }}
           className="info-swiper"
-		  effect={'coverflow'} // или другой эффект
+		  effect={'coverflow'} 
 		  coverflowEffect={{
 			rotate: 50,
 			stretch: 0,
 			depth: 100,
 			modifier: 1,
-			slideShadows: false, // ВОТ ЭТОТ ПАРАМЕТР убирает тени внутри слайдов
+			slideShadows: false, 
 		  }}
         >
-          {/* Слайд 1: Что такое Sky */}
           <SwiperSlide>
 			<div id='info-1' className='glassy info'>
             <h2>Что такое Sky?</h2>
 			<hr />
-			<br /><div id='p1'><div><h3><b>Sky - учебный прототип персонального облака.</b></h3><br /><b>Облако</b> представляет собой сеть удаленных серверов, предназначенную для хранения и обработки данных для других устройств и компьюте­ров. Наш проект относится к модели <b>IaaS (Infrastructure as a Service — Инфраструктура как услуга)</b>. IaaS предоставляет виртуальную инфраструктуру, включая виртуальные машины, хранилище данных и сетевые ресурсы. 
+			<br /><div id='p1'><div><h3><b>Sky - учебный прототип персонального облака.</b></h3><br /><b>Облако</b> представляет собой сеть удаленных серверов, предназначенную для хранения и обработки данных для других устройств и компьюте­ров. Наш проект относится к модели <b>IaaS (Infrastructure as a Service — Инфраструктура как услуга)</b>. IaaS предоставляет виртуальную инфраструктуру, включая виртуальные машины, хранилище данных и сетевые ресурсы. <br /><br />Все серверы работают на ОС <b>Ubuntu Server 24.04</b>.
 			</div><img alt='серверная' title='серверная' src="/sky/c1.jpg" className='articleimg'/></div></div>
           </SwiperSlide>
 
-          {/* Слайд 2: Зачем это нужно */}
           <SwiperSlide>
             <div id='info-2' className='glassy info'>
 			<h2>Зачем это нужно?</h2>
@@ -60,18 +56,17 @@ function Home() {
 			</div>
           </SwiperSlide>
 
-          {/* Слайд 3: Как это работает */}
           <SwiperSlide>
             <div id='info-3' className='glassy info'>
 			<h2>Как это работает?</h2>
 			<hr />
-			<div id='p3'>
-			<p>Мы создаем персональное облако, поэтому в роли хостов используются не сервера из ЦОД, а локальные компьютеры. В нашем случае у этих хостов нет выделенных внешних                                                                                                                                             IP, прямой доступ к ним из интернета не возможен.
-			Для решения этой проблемы был арендован удаленный сервер, который работает как шлюз для сети, к которой подключены устройства клиентов нашего хостинга, арендуемые ими виртуальные машины и наши хосты. Сеть построена на базе <b>OpenVPN</b>.</p>
-			
+			<br /><div id='p3'>
+			<div>
+			<h3><b>Мы создаем персональное облако, поэтому в роли хостов используются не сервера из ЦОД, а локальные компьютеры.</b></h3>
+			<p>В нашем случае у этих хостов нет выделенных внешних                                                                                                                                             IP, прямой доступ к ним из интернета не возможен.<br /><br />
+			Для решения этой проблемы был арендован удаленный сервер, который работает как шлюз для сети, к которой подключены устройства клиентов нашего хостинга, арендуемые ими виртуальные машины и наши хосты. Сеть построена на базе <b>OpenVPN</b>.<br /><br /> Кроме того, на удаленном сервере работает и этот сайт, который предоставляет пользователям интерфейс для заказа услуг и управления ими.</p>
+			</div>
 			<img alt='схема' title='схема' src="/sky/c3.png" className='articleimg'/>
-			<p>Кроме того, на удаленном сервере работает и этот сайт, который предоставляет пользователям интерфейс для заказа услуг и управления ими.
-			</p>
 			</div>
 			
 			</div>
@@ -94,17 +89,17 @@ function Home() {
 		
 		
 
-        {/* Видео отдельно снизу */}
         <div id='info-5' className='glassy info video-block video'>
           <h2>Как использовать?</h2>
           <hr />
-          <video src='https://anryb0.ru/sky/guide.mp4' controls></video>
+          <video src='https://anryb0.ru/sky/guide.mp4' controls poster='sky.png'></video>
         </div>
 
         <p className='center'>
           <Link to='/start' id='try'>Арендовать VDS</Link>
         </p>
       </main>
+
     </>
   );
 }

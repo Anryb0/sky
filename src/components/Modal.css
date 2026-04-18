@@ -13,7 +13,7 @@
 	backdrop-filter: blur(2px);
 }
 .modal-window {
-	background-color: rgba(176, 208, 212, 0.75);
+	background-color: rgba(65, 161, 250,0.2);
     padding: 15px;
     border: 2px solid rgba(255,255,255,0.2);
     width: 60%;

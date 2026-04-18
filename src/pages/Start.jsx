@@ -135,7 +135,6 @@ function Start() {
     var pr = 0;
     tmp.forEach(item => {
       pr += item.price * item.q;
-      console.log(item, pr);
     });
     setTotalPrice(pr * selectedQ);
   };
@@ -151,7 +150,6 @@ function Start() {
 
   const handleHostClick = (id) => {
     setSelectedHost(id);
-    console.log(selectedHost);
   };
 
   return (
@@ -208,7 +206,7 @@ function Start() {
                       <p className='small'>Аренда истечёт: {addMonths(selectedQ).toLocaleDateString()}</p>
                     </div>
                   </div>
-                  <h3><b>Выберите хост для VM<button onClick={LoadHosts} id='updbtn'>Обновить</button></b></h3>
+                  <h3><b>Выберите хост для VM<button onClick={LoadHosts} id='updbtn'>Ping</button></b></h3>
                   {loadingHosts ? (<>
                     <div className='spinner'></div><br /></>
                   ) : (
@@ -247,8 +245,7 @@ function Start() {
 
 					  {
 					  resourcesQ.map((item) => (
-					  <><p>{item.name}: <b>{item.q}</b></p>
-						</>
+					  <p key={item.id}>{item.name}: <b>{item.q}</b></p>
 					  ))
 					  
 					  }
@@ -275,7 +272,7 @@ function Start() {
                     </>
                   ) : noHostsState ? (
                         <span className='glassy error' id='noserveralert'>
-                          <b>Извините, на данный момент нет доступных серверов😥</b>
+                          Извините, на данный момент нет доступных серверов. Попробуйте позже.
                         </span>
                       ) : (
                         <h3>

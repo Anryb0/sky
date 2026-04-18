@@ -8,15 +8,15 @@
 }
 #stop{
 	display: grid;
-	grid-template-columns: 200px 120px 1fr 250px 200px;
+	grid-template-columns: 200px 120px 1fr 80px;
 	margin: 2px 15px;
 	width: 100%;
-	font-size: 14px;
-	font-weight: bold;
+	color: #6a6a6a;
+	font-size: 15px;
 }
 .s {
 	display: grid;
-	grid-template-columns: 200px 120px 1fr 250px 170px;
+	grid-template-columns: 200px 120px 1fr 65px;
 	align-items: center
 }
 .r{
@@ -42,4 +42,7 @@ button.right {
 }
 .e{
 	font-weight: inherit;
+}
+.green {
+	color: green;
 }

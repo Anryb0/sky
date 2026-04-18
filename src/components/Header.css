@@ -10,8 +10,10 @@
 #header-contents{
 	margin: 0 auto;
 	display: grid;
-	grid-template-columns: 1fr 1fr;
+	grid-template-columns: 37px 100px 1fr 200px;
 	max-width: 1150px;
+	min-width: 1050px;
+	z-index: 1;
 }
 #logo {
 	width: 45px;
@@ -37,6 +39,7 @@ a {
 .logo, #pagename {
 	display: inline-block;
 }
+
 #pagename {
 	line-height: 55px;
     vertical-align: bottom;
@@ -85,4 +88,13 @@ a {
     border-radius: 50%;
     height: 45px;
     margin-top: 5px;
+}
+#menu {
+	width:25px;
+	margin-top: 13px;
+	transition: transform 0.15s;
+}
+#menu:hover{
+	cursor: pointer;
+	transform: scale(1.15);
 }

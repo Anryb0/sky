@@ -44,9 +44,10 @@ video {
 	height: 85%;
 	margin: 5px 9%;
 	border-radius: 15px;
+	width: 820px;
 }
 :root {
-  --swiper-navigation-color: rgb(65, 161, 250,0.4); /* или ваш акцентный цвет */
+  --swiper-navigation-color: rgb(65, 161, 250,0.4); 
   --swiper-pagination-color: rgb(65, 161, 250,0.4);
 }
 .swiper {
