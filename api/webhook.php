@@ -162,9 +162,6 @@ try {
             if (!file_exists($local_path)) {
                 throw new Exception("Local VPN config not found: $local_path");
             }
-			else{
-				file_put_contents('файл есть'. PHP_EOL, FILE_APPEND);
-			}
             
             $connection = ssh2_connect('10.8.0.' . $host, 22);
             if (!$connection) {
@@ -183,7 +180,6 @@ try {
                 fclose($stream);
                 
             } else {
-				file_put_contents('не подключился=('. PHP_EOL, FILE_APPEND);
                 throw new Exception('SSH authentication failed');
             }
             

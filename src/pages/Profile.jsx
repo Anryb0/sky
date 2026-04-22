@@ -12,6 +12,7 @@ function Profile(){
 	const[loadingServers,setLoadingServers] = useState(true);
 	const[servers,setServers] = useState(null);
 	const[greeting,setGreeting] = useState(null);
+	const[checkedHosts,setCheckedHosts] = useState(false);
 	
 	function logout(){
 		let xhr = new XMLHttpRequest();
@@ -111,7 +112,6 @@ function Profile(){
 			if(xhr.status == 200){
 				let response = JSON.parse(xhr.responseText);
 				setServers(response.servers);
-				console.log(response.servers);
 				setLoadingServers(false);
 			}
 			else{
@@ -139,10 +139,36 @@ function Profile(){
 			}
 		}
 	}
-	function checkServers(){
+	function checkHosts(){
+		let xhr = new XMLHttpRequest();
+		xhr.open('GET', 'https://anryb0.ru/sky/api/checkserveravail.php');
+		xhr.withCredentials = true;
+		xhr.send();
+		xhr.onload = function(){
+			if(xhr.status == 200){
+				let response = JSON.parse(xhr.responseText);
+				if(response.success){
+					setCheckedHosts(response.hosts_avail);
+					let xhr2 = new XMLHttpRequest();
+					let formData = new FormData();
+					formData.append('hostsavail',response.hosts_avail);
+					xhr2.open('POST', 'https://anryb0.ru/sky/api/allvmcheck.php');
+					xhr2.withCredentials = true;
+					xhr2.send(formData);
+					xhr2.onload = function(){
+						loadServers();
+					}					
+				}
+			}
+			else{
+				openModal('Ошибка ' + xhr.status + ' при обновлении статусов хостов', true);
+			}
+		}
 		
-		
-		
+	}
+	function checkAll(){
+		setLoadingServers(true);
+		checkHosts();
 	}
 	if(!authLoading && !user){
 		navigate('/register');
@@ -154,44 +180,58 @@ function Profile(){
 			{loading ? (<div className='spinner center'></div>) : ( 
 				<div id='maininfo'>
 					<h3 id='topheader'><b>{greeting}, {user}</b><button onClick={() => {loadBasicInfo()}}>Обновить</button></h3>
-						{ response.confirmed ? (<div className='glassy t'><span className='green'>Подтвержденный аккаунт</span><span className='right'>Ваша почта: {response.email}</span></div>) : (<div className='glassy error'>Ваша почта: <b>{response.email}</b>
-						<span className='right'>❌ Ваш аккаунт не подтвержден. Проверьте почту</span><button className='green' onClick={sendNewLink}>Отправить еще ссылку</button></div>)
+						{ response.confirmed ? (<div className='glassy t'><span className='green'>Подтвержденный аккаунт</span><span className='right'>Ваша почта: {response.email}</span></div>) : (<div className='glassy tf'><span>Ваша почта: <b>{response.email} </b>
+						</span><span className='right'><span className='redf'>  Ваш аккаунт не подтвержден. Проверьте почту</span><button onClick={sendNewLink}>Отправить еще ссылку</button></span></div>)
 						}
 						{
 							response.ip ? (<div className='glassy t'><span className='green'>Сеть настроена</span><span className='right'><button onClick={() => {window.location.href ="https://anryb0.ru/sky/api/downloaduserconfig.php"}}>Скачать VPN конфигурацию</button>
 							<button onClick={() => {addUserConfig()}}>Пересоздать</button>
 							<button onClick={() => {window.location.href ="https://anryb0.ru/sky/api/downloadovpn.php"}}>Скачать OpenVPN Connect</button></span></div>) :
-							(<div className='glassy t'>❌ У вас пока нет VPN конфигураций  <span className='right'><button onClick={() => {addUserConfig()}}>Создать</button></span></div>)
+							(<div className='glassy t'>У вас пока нет VPN конфигураций  <span className='right'><button onClick={() => {addUserConfig()}}>Создать</button></span></div>)
 						}
 						</div>)
 			}
 			<hr />
-			<h3><b>Ваши серверы</b><button onClick={() => {window.location.href ="/sky/start"}} className='r'>+</button><button onClick={() => {loadServers()}} className='r'>Ping</button><button onClick={() => {loadServers()}} className='r'>Обновить</button></h3>
+			<h3><b>Ваши серверы</b><button onClick={() => {window.location.href ="/sky/start"}} className='r'>+</button><button onClick={() => {checkAll()}} className='r'>Ping</button><button onClick={() => {loadServers()}} className='r'>Обновить</button></h3>
 			{
 				loadingServers ? (<div className='spinner'></div>) : servers.length > 0 ? (<>
 					<div id='stop'><span>Название</span><span>IP</span><span>Статус</span><span>Хост</span></div>
 					<hr />
-					{servers.map((item)=> {
+					{servers.map((item) => {
+						let hostClass = ""; 
+						if (checkedHosts) {
+							const hostData = checkedHosts.find(h => h.name === item.hname);
+							hostClass = hostData.avail ? "green" : "redf";
+						}
 						return (
-						  <Link className='glassy ilist s e' to={'../control?i='+item.server_id}>
-							<b>{item.name}</b>
-							<span>10.8.0.{item.ip}</span>
-							<span>
-							  {item.status == 'Ждёт оплаты' ? (
-								<button onClick={() => { window.location.href = item.link }}>Ждёт оплаты</button>
-							  ) : item.status == 'Устанавливается' ? (
-								<>
-								  <div className='spinner sm'></div><span className='grey'>  Устанавливается</span>
-								</>
-							  ) : item. status == 'Работает' ? (<span className='green'>Работает</span>) : (
-								item.status
-							  )}
-							</span>
-						
-						
-						<span>{item.hname}</span></Link>)
-					})}</> 
-				) : (<div className='t'>❌ У вас пока нет серверов<span className='right'></span></div>)
+							<Link className='glassy ilist s e' to={'../control?i=' + item.server_id} key={item.server_id}>
+								<b>{item.name}</b>
+								<span>10.8.0.{item.ip}</span>
+								
+								<span>
+									{item.status === 'Ждёт оплаты' ? (
+										<button onClick={(e) => { e.preventDefault(); window.location.href = item.link; }}>
+											Ждёт оплаты
+										</button>
+									) : item.status === 'Устанавливается' ? (
+										<>
+											<div className='spinner sm'></div>
+											<span className='grey'> Устанавливается</span>
+										</>
+									) : item.status === 'Работает' ? (
+										<span className='green'>Работает</span>
+									) : item.status === "Выключен" ? (
+										<span className='redf'>Выключен</span>
+									) : (
+										item.status
+									)}
+								</span>
+								<span className={hostClass}>{item.hname}</span>
+							</Link>
+						);
+					})}
+					</> 
+				) : (<div className='t'>У вас пока нет серверов<span className='right'></span></div>)
 			}
 			<br />
 			<hr />	

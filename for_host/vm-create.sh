@@ -47,6 +47,9 @@ sudo virt-customize -v -x -a "$VM_PATH" \
   --run-command "echo 'up /etc/openvpn/client/on_up.sh' >> /etc/openvpn/client/vpn_sky.conf" \
   --run-command "systemctl enable openvpn-client@vpn_sky" \
   --run-command "echo 'nameserver 8.8.8.8' > /etc/resolv.conf" \
+  --run-command "truncate -s 0 /etc/machine-id" \
+  --run-command "rm /var/lib/dbus/machine-id" \
+  --run-command "ln -s /etc/machine-id /var/lib/dbus/machine-id"
 
 chown qemu:qemu "$VM_PATH" 2>/dev/null || true
 

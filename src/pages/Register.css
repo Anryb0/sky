@@ -4,13 +4,38 @@
 }
 #maingrid {
 	display: grid;
-	grid-gap: 20px;
-	grid-template-columns: 1fr 300px 300px 1fr;
+	grid-gap: 10px;
+	grid-template-columns: 500px;
+	justify-content: center;
 }
 input{
-	margin: 3px;
+	margin: 7px 3px;
 	width: 90%;
+	height: 24px; 
+	font-size: 15px;
 }
 #l1 hr, #r2 hr {
 	margin: 10px 0;
+}
+#changeMode {
+	padding: 5px 10px;
+	width: auto;
+	font-size: 13px;
+}
+.c {
+	width: 100%;
+	text-align: center;
+}
+input.but {
+	font-size: 18px;
+	padding: 5px 30px;
+	height: 35px;
+	background-color: rgba(65, 161, 250,0.4);
+}
+input.but:hover{
+	cursor: pointer;
+	transform: scale(1.05);
+}
+.c button {
+	font-weight: inherit;
 }

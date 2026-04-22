@@ -6,6 +6,13 @@
 	align-items: center;
 	justify-items: stretch
 }
+.tf {
+	display: grid;
+	grid-template-columns: 1fr 700px;
+	justify-content: center;
+	align-items: center;
+	justify-items: stretch
+}
 #stop{
 	display: grid;
 	grid-template-columns: 200px 120px 1fr 80px;
@@ -45,4 +52,7 @@ button.right {
 }
 .green {
 	color: green;
+}
+.redf {
+	color: red;
 }

@@ -47,6 +47,26 @@
 		}
 		$maininfo = $row;
 		$stmt->close();
+		
+		$hostavail = false;
+		exec("ping -c 1 -W 1 10.8.0." . $row['host'] + 1, $output, $res);
+		if($res == 0){
+			$hostavail = true;
+		}
+		$avail = false;
+		if($hostavail){
+			exec("ping -c 1 -W 1 10.8.0." . $row['ip'], $output, $res);
+			if($res == 0){
+				$avail = true;
+			}
+		}
+		if(!$avail){
+			$tmp = "Выключен";
+			$stmt = $conn->prepare("update servers set status = ? where server_id = ?");
+			$stmt->bind_param('ii',$maininfo['status'], $tmp);
+			$stmt->execute();
+			$maininfo['status'] = $tmp;
+		}
 		$resq = [];
 		$stmt = $conn->prepare("select sr.q, r.name from servers_resources sr
 		left join resources r on r.resource_id = sr.resource_id 
@@ -62,11 +82,57 @@
 		}
 		$stmt->close();
 		$conn->close();
-		echo json_encode(['success' => true,'maininfo'=>$maininfo,'resq'=>$resq]);
-		exit;
-		
+		echo json_encode(['success' => true,'maininfo'=>$maininfo,'resq'=>$resq, 'hostavail'=>$hostavail,'avail'=>$avail]);
+		exit;		
 	}
-
-
-
+	if($mode == 1){
+		$stmt = $conn->prepare("select user_id, name, host from servers where server_id = ?");
+		$stmt->bind_param('i', $server_id);
+		$stmt->execute();
+		$result = $stmt->get_result();
+		$row = $result->fetch_assoc();
+		if ($row['user_id'] != $user['id']){
+			echo json_encode(['success' => false,'message'=>'Доступ запрещен']);
+			$stmt->close();
+			$conn->close();
+			exit;
+		}
+		$connection = ssh2_connect('10.8.0.' . ($row['host'] +  1), 22);
+		if (!$connection) {
+                throw new Exception('SSH connection failed');
+            }    
+        if (ssh2_auth_password($connection, 'anryb0', $_ENV['SERVER_PASS'])) {
+			$cmd = "/vms/vm-start.sh " . escapeshellarg($row['name']);
+			$stream = ssh2_exec($connection, $cmd);
+			stream_set_blocking($stream, true);
+			$output = stream_get_contents($stream);
+			fclose($stream);
+		}
+		echo 'done';
+	}
+	if($mode == 2){
+		$stmt = $conn->prepare("select user_id, name, host from servers where server_id = ?");
+		$stmt->bind_param('i', $server_id);
+		$stmt->execute();
+		$result = $stmt->get_result();
+		$row = $result->fetch_assoc();
+		if ($row['user_id'] != $user['id']){
+			echo json_encode(['success' => false,'message'=>'Доступ запрещен']);
+			$stmt->close();
+			$conn->close();
+			exit;
+		}
+		$connection = ssh2_connect('10.8.0.' . ($row['host'] + 1), 22);
+		if (!$connection) {
+                throw new Exception('SSH connection failed');
+            }    
+        if (ssh2_auth_password($connection, 'anryb0', $_ENV['SERVER_PASS'])) {
+			$cmd = "/vms/vm-stop.sh " . escapeshellarg($row['name']);
+			$stream = ssh2_exec($connection, $cmd);
+			stream_set_blocking($stream, true);
+			$output = stream_get_contents($stream);
+			fclose($stream);
+		}
+		echo 'done';
+	}
 ?>

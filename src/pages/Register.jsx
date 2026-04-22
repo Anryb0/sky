@@ -6,6 +6,7 @@ import './Register.css';
 
 
 function Register(props) {
+   const [regMode, setRegMode] = useState(false);
    const [logininfo,setLogininfo] = useState({llogin:'',lpass:''});
    const [registerinfo,setRegisterinfo] = useState({rlogin:'',remail:'',rpass:'',passcheck:''});
    const navigate = useNavigate();
@@ -50,6 +51,9 @@ function Register(props) {
 			}
 		}
 	}
+	const changeRegMode = (e) => {
+		setRegMode(!regMode)
+	}
 	const regist = (e) => {
 		e.preventDefault();
 		let formData = new FormData();
@@ -82,6 +86,7 @@ function Register(props) {
 		<main>
 				<div id='maingrid'>
 					<div></div>
+					{ !regMode ? (
 					<div id='l1' className='glassy'>
 						<h3><b>Войти</b></h3>
 						<hr />
@@ -96,7 +101,7 @@ function Register(props) {
 								<input type="submit" value="Вход"  className="but" id='lb'/>
 							</div>
 						</form>
-					</div>
+					</div> ) : (
 					<div id='r2' className='glassy'>
 						<h3><b>Зарегистрироваться</b></h3>
 						<hr />
@@ -117,8 +122,12 @@ function Register(props) {
 								<input type="submit" value="Регистрация" className="but" id='rb'/>
 							</div>
 						</form>
+					</div> ) }
+					<div className='c'>
+						<button id = "changeMode" onClick={() => changeRegMode()}>
+							{regMode ? (<>У меня есть аккаунт</>) : (<>У меня нет аккаунта</>)}
+						</button>
 					</div>
-					<div></div>
 				</div>
 			</main>
 	</>

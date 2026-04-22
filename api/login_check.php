@@ -14,13 +14,13 @@
 
 	try {
 		$decoded = JWT::decode($jwt, new Key($secretKey, 'HS256'));
-
-		echo json_encode([
+		$user = [
 			'authorized' => true,
 			'id' => $decoded->data->userId,
 			'name' => $decoded->data->userName,
 			'role' => $decoded->data->role
-		]);
+		];
+		echo json_encode($user);
 
 	} catch (Exception $e) {
 		echo json_encode([
