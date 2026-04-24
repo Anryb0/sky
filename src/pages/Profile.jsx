@@ -67,36 +67,9 @@ function Profile(){
 	useEffect(()=>{
 		const queryString = window.location.search;
 		const urlParams = new URLSearchParams(queryString);
-		if(urlParams.get('createdserver')){
-			displayServerAlert(parseInt(urlParams.get('createdserver')))
-		}
 		loadBasicInfo();
 		loadServers();
 	},[])
-	function displayServerAlert(serverId){
-		let xhr = new XMLHttpRequest();
-		let formData = new FormData();
-		formData.append('serverId',serverId);
-		formData.append('mode',2);
-		xhr.open("POST", "https://anryb0.ru/sky/api/profile.php", true);
-		xhr.withCredentials = true;
-		xhr.send(formData);
-		xhr.onload = function(){
-			if(xhr.status == 200){
-				let response = JSON.parse(xhr.responseText);
-				let data = response.data;
-				openModal(
-				  <span>
-					VM {data.name} успешно создана. <button onClick={() => {window.location.href ="https://anryb0.ru/sky/control?id="+serverId}}>Перейти к управлению</button>
-				  </span>,
-				  false
-				)
-			}
-			else{
-				openModal('Ошибка ' + xhr.status + ' при получении данных о сервере', true);
-			}
-		}
-	}
 	function loadServers(){
 		if(!authLoading && !user){
 			navigate('/register');

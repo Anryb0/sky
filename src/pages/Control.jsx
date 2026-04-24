@@ -12,6 +12,7 @@ function Control(){
 	const[resq,setResq] = useState(null);
 	const[hostavail,setHostavail] = useState(false);
 	const[avail,setAvail] = useState(false);
+	const[blockControl, setBlockControl] = useState(false);
 	if(!authLoading && !user){
 		navigate('/');
 	}
@@ -43,6 +44,7 @@ function Control(){
 						setMaininfo(response.maininfo);
 						setHostavail(response.hostavail);
 						setAvail(response.avail);
+						console.log(response);
 						setResq(response.resq);
 						setLoading(false);
 					}
@@ -57,9 +59,33 @@ function Control(){
 		}
 	}
 	function deleteServer(){
-		
+		setBlockControl(true);
+		const queryString = window.location.search;
+		const urlParams = new URLSearchParams(queryString);
+		if(!urlParams.get('i')){
+			openModal('Некорректный URL', true);
+			return;
+		}
+		let server_id = urlParams.get('i');
+		let xhr = new XMLHttpRequest();
+		let formData = new FormData();
+		formData.append('server_id',server_id);
+		formData.append('mode',3);
+		xhr.open("POST", "https://anryb0.ru/sky/api/control.php", true);
+		xhr.withCredentials = true;
+		xhr.send(formData);
+		xhr.onload = function(){
+			if(xhr.status == 200){
+				openModal("Сервер успешно удален.");
+				navigate('/');
+			}
+			else{
+				openModal('Ошибка ' + xhr.status + ' при отправке запроса', true);
+			}
+		}
 	}
 	function startServer(){
+		setBlockControl(true);
 		const queryString = window.location.search;
 		const urlParams = new URLSearchParams(queryString);
 		if(!urlParams.get('i')){
@@ -76,7 +102,8 @@ function Control(){
 		xhr.send(formData);
 		xhr.onload = function(){
 			if(xhr.status == 200){
-				openModal("Запрос отправлен");
+				openModal("Запрос отправлен. Сервер запускается, он будет доступен в ближайшее время.");
+				setBlockControl(false);
 			}
 			else{
 				openModal('Ошибка ' + xhr.status + ' при отправке запроса', true);
@@ -84,6 +111,7 @@ function Control(){
 		}
 	}
 	function stopServer(){
+		setBlockControl(true);
 		const queryString = window.location.search;
 		const urlParams = new URLSearchParams(queryString);
 		if(!urlParams.get('i')){
@@ -100,7 +128,9 @@ function Control(){
 		xhr.send(formData);
 		xhr.onload = function(){
 			if(xhr.status == 200){
-				openModal("Запрос отправлен");
+				openModal("Сервер успешно выключен");
+				setBlockControl(false);
+				loadMainInfo();
 			}
 			else{
 				openModal('Ошибка ' + xhr.status + ' при отправке запроса', true);
@@ -144,15 +174,16 @@ function Control(){
 									hostavail ? (<>
 										<p>Статус: <b>{maininfo.status}</b></p>
 										{
-											avail ? (<><button onClick={() => startServer()}>Перезагрузить</button><button onClick={() => stopServer()}>Выключить</button></>) : (
+											 blockControl ? (<div className="spinner"></div>) : avail ? (<><button onClick={() => startServer()}>Перезагрузить</button><button onClick={() => stopServer()}>Выключить</button></>) : maininfo.status != "Устанавливается" ? (
 												<button onClick={() => startServer()}>Включить</button>
-											)
+											) : (<></>)
 										}
+										{blockControl ? (<></>) : maininfo.status != "Устанавливается" ? (
 										<button className='error' onClick = {()=>{
 											openModal(<span>
 												Возврат средств или восстановление сервера не предусмотрено.
-											<button className='error'>Все равно удалить</button></span>, true);
-										}}>Удалить</button>
+											<button className='error' onClick={()=>deleteServer()}>Все равно удалить</button></span>, true);
+										}}>Удалить</button> ) : (<></>)}
 									</>) : (
 										<>
 										<p className='redf'>Извините, хост недоступен. Управление VM невозможно.</p>

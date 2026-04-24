@@ -58,12 +58,17 @@
 			exec("ping -c 1 -W 1 10.8.0." . $row['ip'], $output, $res);
 			if($res == 0){
 				$avail = true;
+				$tmp = "Работает";
+				$stmt = $conn->prepare("update servers set status = ? where server_id = ?");
+				$stmt->bind_param('si', $tmp, $server_id);
+				$stmt->execute();
+				$maininfo['status'] = $tmp;
 			}
 		}
-		if(!$avail){
+		if(!$avail && $maininfo['status'] != "Устанавливается"){
 			$tmp = "Выключен";
 			$stmt = $conn->prepare("update servers set status = ? where server_id = ?");
-			$stmt->bind_param('ii',$maininfo['status'], $tmp);
+			$stmt->bind_param('si',$tmp, $server_id);
 			$stmt->execute();
 			$maininfo['status'] = $tmp;
 		}
@@ -132,6 +137,38 @@
 			stream_set_blocking($stream, true);
 			$output = stream_get_contents($stream);
 			fclose($stream);
+			$tmp = "Выключен"; 
+			$stmt = $conn->prepare("update servers set status = ? where server_id = ?");
+			$stmt->bind_param('si', $tmp, $server_id);
+			$stmt->execute();
+		}
+		echo 'done';
+	}
+	if($mode == 3){
+		$stmt = $conn->prepare("select user_id, name, host from servers where server_id = ?");
+		$stmt->bind_param('i', $server_id);
+		$stmt->execute();
+		$result = $stmt->get_result();
+		$row = $result->fetch_assoc();
+		if ($row['user_id'] != $user['id']){
+			echo json_encode(['success' => false,'message'=>'Доступ запрещен']);
+			$stmt->close();
+			$conn->close();
+			exit;
+		}
+		$connection = ssh2_connect('10.8.0.' . ($row['host'] + 1), 22);
+		if (!$connection) {
+                throw new Exception('SSH connection failed');
+            }    
+        if (ssh2_auth_password($connection, 'anryb0', $_ENV['SERVER_PASS'])) {
+			$cmd = "/vms/vm-remove.sh " . escapeshellarg($row['name']);
+			$stream = ssh2_exec($connection, $cmd);
+			stream_set_blocking($stream, true);
+			$output = stream_get_contents($stream);
+			fclose($stream);
+			$stmt2 = $conn->prepare("delete from servers where server_id = ?");
+			$stmt2->bind_param('i', $server_id);
+			$stmt2->execute();
 		}
 		echo 'done';
 	}

@@ -47,7 +47,7 @@ a {
 }
 .lau {
 	width: auto;
-	background: rgb(65, 161, 250,0.2);
+	background: rgb(65, 161, 250,0.4);
 	backdrop-filter: blur(1px); 
 	border: 2px solid rgba(255,255,255,0.2); 
 	border-radius: 10px;

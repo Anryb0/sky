@@ -15,7 +15,7 @@
 .modal-window {
 	background-color: rgb(212 242 250 / 95%);;
     padding: 15px;
-    border: 2px solid rgba(255,255,255,0.2);
+    border: 2px solid rgba(65, 161, 250,0.4);
     width: 60%;
 	max-width: 500px;
 	min-width: 300px;

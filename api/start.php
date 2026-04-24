@@ -106,7 +106,7 @@
             ),
             'confirmation' => array(
                 'type' => 'redirect',
-                'return_url' => 'https://anryb0.ru/sky/profile?createdserver='.$server,
+                'return_url' => 'https://anryb0.ru/sky/profile',
             ),
             'capture' => true,
             'description' => 'Заказ №'.$server,

@@ -12,7 +12,7 @@ function Modal() {
                 ${modal.error ? "error" : ""}
                 ${modal.closing ? "slide-down" : "slide-up"}
             `}>
-                <p>{modal.message}</p>
+                <div>{modal.message}</div>
                 <button onClick={closemodal}>OK</button>
             </div>
         </div>
