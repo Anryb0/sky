@@ -49,9 +49,18 @@
 	$user_id = $conn->insert_id;
 	$stmt->close();
 	$resend = Resend::client($_ENV['API_MAIL']);
-	$html = "<h2>Уважаемый $login, </h2><br>
-	<p>Спасибо за регистрацию на нашем сайте. Надеюсь, у Вас останутся только положительные эмоции от использования. Пожалуйста, перейдите по ссылке ниже чтобы подтвердить свою личность =)</p><br>
-	<p><b>$verification_link</b></p><br><p>На письмо отвечать не нужно. Контакты поддержки можно найти по адресу: https://anryb0.ru/sky/support</p>";
+	$html = "<div style='font-family: sans-serif'>
+        <h2>Здравствуйте, $login</h2>
+        <p>Благодарим Вас за регистрацию в Sky. Для подтверждения своего аккаунта перейдите по ссылке ниже.</p>
+        <p style='margin: 20px 0;'>
+            <a href='$verification_link' style=''>Подтвердить регистрацию</a>
+        </p>
+        <hr>
+        <p>
+            Данное письмо сформировано автоматически, отвечать на него не нужно.<br>
+            Техническая поддержка: <a href='https://anryb0.ru/sky/support'>https://anryb0.ru/sky/support</a>
+        </p>
+    </div>";
 
 	$resend->emails->send([
 	  'from' => $_ENV['MAIL'],
